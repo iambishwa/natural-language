@@ -1,0 +1,10 @@
+
+cp.rest.base.url=http://10.10.10.12:7101/api/v1/cp
+bg.rest.base.url=http://192.168.1.109:8087/internal/api/v1/bg
+
+
+
+
+1. SELECT ALL
+2. MODAL: REJECTION HISTORY, ACCEPTANCE HISTORY
+3. REQUEST DATE COLUMN
