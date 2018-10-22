@@ -1,0 +1,103 @@
+> (Slide 1)
+Good morning/afternoon everyone. I am Tapos Datta, I am Bishwajit Purkaystha. Our thesis title is, generalized product recommendation using nonlinear user and item factorization by modified artificial neural network. Our supervisor is Assistant Professor Mrs. Marium-E-Jannat, and our co-supervisor is Assistant Professor Mr. Md Saiful Islam.
+
+> (Slide)
+Today we will begin with introductory discussion on recommender system, propose a novel deep feed-forward architecture, and finally we'll see how our model performs in practice.
+
+> (Slide)
+The idea is fairly intuitive. A recommender system is any device that would see the graph here, and based on the information provided here would try to decide whether to recommend camera to that user or not. It is that simple. But this becomes a problem if the graph contains millions of such nodes and billions of such edges.
+
+> (Slide)
+The problem can be modeled as a rating matrix, where we have some already filled in entries, and we are looking to fill the missing entries. Here we have shown such a matrix. Each entry in this matrix is actually the interaction between the user and the item. Say, we are interested in fourth user and third item. And we interpolate the interaction!!!!
+
+> (Slide)
+Now we are going to propose a deep factorization model to predict the interaction. We call this model nonlinear user and item factorization model.
+
+> (Slide)
+Here's our deep model you can see. At the bottommost layer, we have split the units logically into two. The first sublayer is actually user container which contains randomly initialized user factors whereas the second sublayer is an item container which contains item factors. The first hidden layer is also divided into two. The rest of the network is really simple. At the outermost layer we have got only one unit that outputs the rating.
+
+> (Slide)
+So in forward propagation phase, mini-batches of the randomly initialized factors just flow through several layers of nonlinear units and finally produces a scaled down rating. The rating may be bad so we need to learn the relationship and the factors.
+
+> (Slide)
+In backward propagation we just follow the gradient descent method. The error propagation is started from the outermost layer, and it passes through the lower layers till the factor layer is reached. Finally we update the randomly initialized factors in the containers. And this helps our network to learn each user and each item separately.
+
+Bishwajit will continue from here!!!
+
+Thank you Tapos.
+
+> (Slide 2-5)
+Now I shall start with an elegant justification of the learning process of our network. Here you can see we have drawn an imaginary error surface for our model with two local minima A and B. The filled in circle here is actually denoting current configuration. Because of the optimizer, the circle has tendency to go down towards the ravine. Going down towards the ravine means finding (nearly) optimal set of parameters.
+
+As there were no connection to the first sublayer of the first hidden layer allowed from item container, the optimal connections for this sublayer directly amounts to specialization in dealing with user factors. Same is true for the item factor specialization. So, finally we're here, at A. Here we have (nearly) optimal set of parameters and say our network has learned how to deal with user and item factors and the factor themselves.
+
+> (Slide 6)
+
+We have tested our system on datasets from various domains. They are music, movies, and jokes. Each of the domain contains two datasets here. You can see they are very gigantic. Movielens 100 thousand dataset contains ratings in span of more than 20 years. So it would really test the system's capability to model dynamicity of both users' preferences and item characteristics.
+
+> (Slide 7-9)
+As we already know, there's a pitfall for using deep architectures. You need to invest a significant amount of time for finding a good set of parameters. Each dataset required different set of parameters to achieve significant results. Here's our parameter for Yahoo music. You can see we have two times more factors for each item as compared to each user. The dropout has helped our model to generalize well.
+
+Here's our parameters for Movielens datasets. You can see a strong droupout has helped our model to generalize well. The number of batch size is small for the dataset with 100 thousands ratings. We needed to have bigger batches for the dataset with 1 million ratings.
+
+Here's our parameter for Jester datasets. You may be overwhelmed by the large gap in the number of user factors and the number of item factors. It is actually reasonable. Becuase we have each user, in average, rated 56 jokes. On the other hand, each joke has been rated by, on average, 40 thousands users. So we could get to know about the items more, right?
+
+> (Slide 10)
+Now let's see how our model learns. We have picked the largest dataset from each domain. You can see the random fluctuations here, but you won't disagree that all these three curves have tendency to go down in error with more epochs. Not all dataset required same amount of learning. Learning in Yahoo and Movielens has finished way before Jester. It is because Jester is 10 times larger than Yahoo and 4 times larger than Movielens.
+
+
+-- 
+% Science fiction::: WOWOWOWOW emo....
+% Thriller ::: Oh not again emo...
+> (Slide 11)
+We are now going to see how our model performs in practice, so that we better understand how good it actually does.. How well our model predicts the ratings? We have randomly picked a user from Movielens. He turned out to be generous. His average rating is more than 4. We manually checked what genres he likes most(animation), and what he hates (animation).
+
+A science fiction movie of 1968, Space Odyssey, what is the interaction???
+
+% Fonts need to be larger, the actual rating, and prediction of the network too need to have larger fonts.
+% Use reference for emojis.
+Our model says he is going to like it, actually the model says rating is 3.71.
+
+Great prediction. He actually rated 4.
+
+Now another movie of genre thriller, which he normally does not like.
+
+Our network said in negative, it said the user will rate movie 1.65.
+
+Wonderful, he actually rated 1. So, we never gave any information about the user and these movies to our network. The network only saw the ratings. But still, it was able to identify the distinctive features of each user and each item, and it was able to model the complex nonlinear layered relationship to this extent.
+
+% Use one more slide for the best existing models.
+
+> (Slide)
+We are going to compare our model with some best existing models now. Here are the models. We'll first compare with other models in terms of root mean squared errors.
+
+
+% set the lower limits and upper limits, and the units so that improvement is clearly visible.
+% 2 bar diagrams need to merge.
+This is where we stand now for Yahoo music; You can see the improvement done by our model, although very tiny. Please see that our RMSE is smaller than any other models here.
+
+% 2 bar diagrams need to merge.
+This is where we stand now for Movielens movies; The improvement is more visible than the previous one.
+
+Clearly, we stand tall and the improvement is significant in Jester.
+
+> (The missing Slide)
+We have added this graph to show that our model is scalable. As the size of the dataset grows, the improvement made by our model becomes more ostensible. This is a great advantage!!!!
+
+> (Slide)
+Now lets compare our model in terms of recommending products. This is for Yahoo. We have actually recommended the items if they had predicted ratings greater than a threshold. This was the simplest thing to do. There are some other models that produced similar or better recommendation for higher recalls.
+
+It happens similar as before for movielens. There are models which produces similar recommendations as ours only when recall is larger.
+
+But for Jester no model produced better recommendation than ours. I am reiterating that, Jester is 4 times more enormous than Movielens and 10 times more than Yahoo.
+
+> (Slide)
+In 4-1 we had only developed a prototypical version of it and had run it on Jester 1.8 million dataset. It had then produced RMSE 4.3262 and was looking promising.
+
+The improvement on Jester 1.8 million is here. Extensive parameter search was required.
+
+> (Slide)
+On closing remarks, we would want to say that the search of parameter continued for about two months. We simultaneously ran our system on 4 computers. Otherwise, we could not have completed this thesis.
+
+> (Slide)
+Thank you very much.
